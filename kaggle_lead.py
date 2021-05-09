@@ -4,6 +4,8 @@ import zipfile
 import csv
 import datetime
 from pytz import timezone
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def mark(score):
@@ -33,7 +35,7 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
             tmp_mark = '<=7'
-        tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').replace(tzinfo=datetime.timezone.utc).astimezone(timezone("Australia/Victoria")).strftime('%d %b %H:%M:%S')
+        tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').replace(tzinfo = datetime.timezone.utc).astimezone(timezone("Australia/Victoria")).strftime('%d %b %H:%M:%S')
 
 
         row[2] = tmp_date
@@ -41,11 +43,22 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         result.append(row + [tmp_mark])
 
 
+labels, counts = np.unique([mark(_[3]) for _ in result], return_counts=True)
+plt.bar(labels, counts, align = 'center')
+plt.gca().set_xticks(range(6,16))
+plt.xlabel('Points')
+plt.ylabel('Count')
+plt.title(r'Histogram of Points, $\quad \overline{x}=' + str(round(sum([mark(_[3]) for _ in result])/len(result), 2)) +'$')
+plt.savefig(os.path.join(cwd, "data/points_hist.png"), dpi = 300)
+
+
+
 with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write("# ETC3250 Kaggle score\n\n")
     f.write('**Last updated: {a}**\n\n'.format(a = datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')))
     f.write('## Public leaderboard\n\n')
     f.write('Number of teams: {a}\n\n'.format(a = len(result)))
+    f.write('<img src="data/points_hist.png" width="100%" height="100%" />\n\n')
     f.write('|Team Id|Team Name|Submission Date|Score|Points|\n')
     f.write('|---|---|---|---|---|\n')
     for row in result:
