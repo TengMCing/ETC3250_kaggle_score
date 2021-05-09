@@ -5,12 +5,13 @@ import csv
 import datetime
 from pytz import timezone
 import matplotlib.pyplot as plt
-import numpy as np
+import collections
 
 
 def mark(score):
     std = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.661, 0.656]
     return(15 - len([0 for _ in std if float(score) <= _]))
+
 
 cwd = os.getcwd()
 target_path = os.path.join(cwd, "data/publicleaderboarddata.zip")
@@ -43,7 +44,9 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         result.append(row + [tmp_mark])
 
 
-labels, counts = np.unique([mark(_[3]) for _ in result], return_counts=True)
+labels = collections.Counter([mark(_[3]) for _ in result]).keys()
+counts = collections.Counter([mark(_[3]) for _ in result]).values()
+plt.style.use('ggplot')
 plt.bar(labels, counts, align = 'center')
 plt.gca().set_xticks(range(6,16))
 plt.xlabel('Points')
