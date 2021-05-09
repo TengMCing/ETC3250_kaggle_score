@@ -6,7 +6,7 @@ import datetime
 
 
 def mark(score):
-    std = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.561, 0.656]
+    std = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.661, 0.656]
     return(15 - len([0 for _ in std if float(score) <= _]))
 
 cwd = os.getcwd()
