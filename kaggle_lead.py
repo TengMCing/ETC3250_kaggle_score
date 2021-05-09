@@ -32,13 +32,19 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
             tmp_mark = '<=7'
-        result.append(row + [tmp_mark])
+        tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').strftime('%d %b %H:%M:%S')
+
+        row[2] = tmp_date
+        row[-1] = tmp_mark
+
+        result.append(row)
 
 
 with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write("# ETC3250 Kaggle score\n\n")
     f.write('**Laste updated: {a}**\n\n'.format(a = datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')))
     f.write('## Public leaderboard\n\n')
+    f.write('Number of teams: {a}\n\n'.format(a = len(result)))
     f.write('|Team Id|Team Name|Submission Date|Score|Points|\n')
     f.write('|---|---|---|---|---|\n')
     for row in result:
