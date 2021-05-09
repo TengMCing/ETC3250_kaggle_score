@@ -44,7 +44,7 @@ with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write('**Last updated: {a}**\n\n'.format(a = datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')))
     f.write('## Public leaderboard\n\n')
     f.write('Number of teams: {a}\n\n'.format(a = len(result)))
-    f.write('|#|Team Id|Team Name|Submission Date|Score|Points|\n')
+    f.write('|Team Id|Team Name|Submission Date|Score|Points|\n')
     f.write('|---|---|---|---|---|\n')
     for row in result:
         f.write('|' + '|'.join([str(_) for _ in row]) + '|\n')

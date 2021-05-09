@@ -1,12 +1,12 @@
 # ETC3250 Kaggle score
 
-**Last updated: May 09, 2021 20:13:40**
+**Last updated: May 09, 2021 20:15:40**
 
 ## Public leaderboard
 
 Number of teams: 125
 
-|#|Team Id|Team Name|Submission Date|Score|Points|
+|Team Id|Team Name|Submission Date|Score|Points|
 |---|---|---|---|---|
 |6738671|Admin|04 May 08:43:34|0.88172|14|
 |6749317|zyan0056@supereli|09 May 00:43:07|0.78324|12|
