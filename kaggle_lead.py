@@ -3,6 +3,7 @@ import os
 import zipfile
 import csv
 import datetime
+from pytz import timezone
 
 
 def mark(score):
@@ -32,7 +33,8 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
             tmp_mark = '<=7'
-        tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').strftime('%d %b %H:%M:%S')
+        tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').replace(tzinfo=datetime.timezone.utc).astimezone(timezone("Australia/Victoria")).strftime('%d %b %H:%M:%S')
+
 
         row[2] = tmp_date
 
