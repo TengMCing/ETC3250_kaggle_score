@@ -55,12 +55,28 @@ plt.title(r'Histogram of Points, $\quad \overline{x}=' + str(round(sum([mark(_[3
 plt.savefig(os.path.join(cwd, "data/points_hist.png"), dpi = 300)
 
 
+plt.clf()
+plt.hlines(range(7, 16), xmin = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.661, 0.656, 0][::-1], xmax=[1, 0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.661, 0.656][::-1], colors = "blue")
+plt.vlines([0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.661, 0.656][::-1], ymin = 7, ymax = range(8,16), linestyles = 'dashed', colors = "blue")
+
+j = 7
+for i in [0.88172, 0.861, 0.800, 0.769, 0.738, 0.667, 0.661, 0.656][::-1]:
+    j += 1
+    plt.annotate(i, (i, j), ha = "center")
+plt.ylim(7, 16)
+plt.xlim(0.6, 1)
+plt.title("Grading")
+plt.xlabel("Score")
+plt.ylabel("Points")
+plt.savefig(os.path.join(cwd, "data/grading.png"), dpi = 300)
+
 
 with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write("# ETC3250 Kaggle score\n\n")
     f.write('**Last updated: {a}**\n\n'.format(a = datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')))
     f.write('## Public leaderboard\n\n')
     f.write('Number of teams: {a}\n\n'.format(a = len(result)))
+    f.write('<img src="data/grading.png" width="100%" height="100%" />\n\n')
     f.write('<img src="data/points_hist.png" width="100%" height="100%" />\n\n')
     f.write('|Team Id|Team Name|Submission Date|Score|Points|\n')
     f.write('|---|---|---|---|---|\n')
