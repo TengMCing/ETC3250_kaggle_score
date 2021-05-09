@@ -35,9 +35,8 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').strftime('%d %b %H:%M:%S')
 
         row[2] = tmp_date
-        row[-1] = tmp_mark
 
-        result.append(row)
+        result.append(row + [tmp_mark])
 
 
 with open(os.path.join(cwd, 'README.md'), 'w') as f:
