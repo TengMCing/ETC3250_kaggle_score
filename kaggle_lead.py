@@ -32,7 +32,7 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
             tmp_mark = '<=7'
-        result.append(row + [mark(row[-1])])
+        result.append(row + [tmp_mark])
 
 
 with open(os.path.join(cwd, 'README.md'), 'w') as f:
