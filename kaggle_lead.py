@@ -6,6 +6,7 @@ import datetime
 from pytz import timezone
 import matplotlib.pyplot as plt
 import collections
+import seaborn as sns
 
 
 def mark(score):
@@ -54,6 +55,14 @@ plt.ylabel('Count')
 plt.title(r'Histogram of Points, $\quad \overline{x}=' + str(round(sum([mark(_[3]) for _ in result])/len(result), 2)) +'$')
 plt.savefig(os.path.join(cwd, "data/points_hist.png"), dpi = 300)
 
+plt.clf()
+sns.distplot([float(_[3]) for _ in result], kde = True, color = 'darkblue', rug = True, hist = False, norm_hist = True)
+plt.xlabel('Score')
+plt.title(r'Histogram of Score, $\quad \overline{x}=' + str(round(sum([float(_[3]) for _ in result])/len(result), 4)) +'$')
+plt.vlines([0.61516, 0.88172], ymin = 0, ymax = 15, linestyles = "dashed", colors = "red")
+plt.annotate("Baseline", (0.61516, 15), ha = "center")
+plt.annotate("Admin", (0.88172, 15), ha = "center")
+plt.savefig(os.path.join(cwd, "data/score_density.png"), dpi = 300)
 
 plt.clf()
 plt.hlines(range(7, 16), xmin = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656, 0][::-1], xmax=[1, 0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656][::-1], colors = "blue")
@@ -77,6 +86,7 @@ with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write('## Public leaderboard\n\n')
     f.write('Number of teams: {a}\n\n'.format(a = len(result)))
     f.write('<img src="data/grading.png" width="100%" height="100%" />\n\n')
+    f.write('<img src="data/score_density.png" width="100%" height="100%" />\n\n')
     f.write('<img src="data/points_hist.png" width="100%" height="100%" />\n\n')
     f.write('|Team Id|Team Name|Submission Date|Score|Points|\n')
     f.write('|---|---|---|---|---|\n')
