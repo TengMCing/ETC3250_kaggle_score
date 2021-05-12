@@ -1,10 +1,10 @@
 # ETC3250 Kaggle score
 
-**Last updated: May 12, 2021 13:14:24**
+**Last updated: May 12, 2021 13:17:14**
 
-```diff
-## WARNING: Your final grade is based on your score on the `private leaderboard`. But the `public leaderboard` could give you some hints about your model performance.
-```
+## WARNING: Your final grade is based on your score on the `private leaderboard`. 
+
+## But the `public leaderboard` could give you some hints about your model performance.
 
 ## Public leaderboard
 
