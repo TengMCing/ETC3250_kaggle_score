@@ -1,8 +1,12 @@
 # ETC3250 Kaggle score
 
-**Last updated: May 12, 2021 13:12:21**
+**Last updated: May 12, 2021 13:14:24**
 
-## WARNING: Your final grade is based on your score on the `private leaderboard`. But the `public leaderboard` could give you some hints about your model performance.## Public leaderboard
+```diff
+## WARNING: Your final grade is based on your score on the `private leaderboard`. But the `public leaderboard` could give you some hints about your model performance.
+```
+
+## Public leaderboard
 
 Number of teams: 199
 
