@@ -90,8 +90,10 @@ with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write('<img src="data/grading.png" width="100%" height="100%" />\n\n')
     f.write('<img src="data/score_density.png" width="100%" height="100%" />\n\n')
     f.write('<img src="data/points_hist.png" width="100%" height="100%" />\n\n')
-    f.write('|Team Id|Team Name|Submission Date|Score|Points|\n')
-    f.write('|---|---|---|---|---|\n')
+    f.write('|#|Team Id|Team Name|Submission Date|Score|Points|\n')
+    f.write('|---|---|---|---|---|---|\n')
+    j = 0
     for row in result:
-        f.write('|' + '|'.join([str(_) for _ in row]) + '|\n')
+        j = j + 1
+        f.write('|' + str(j) + '|' + '|'.join([str(_) for _ in row]) + '|\n')
 
