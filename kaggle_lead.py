@@ -34,6 +34,10 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
     f.readline()
     csv_reader = csv.reader(f, delimiter = ",")
     for row in csv_reader:
+        if row[1] == "Admin":
+            continue
+        if row[1] == "Admin2":
+            continue
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
             tmp_mark = '<=7'
