@@ -12,7 +12,7 @@ For reproducibility.
 set.seed(32505250)
 ```
 
-Load in the training data
+Load the training data
 ```r
 mydat <- read_csv(here::here("data/release/student/student_training_release.csv"))
 ```
@@ -109,7 +109,7 @@ myworkflow <- myworkflow %>%
   fit(data = mydat)
 ```
 
-Load in the prediction data.
+Load the prediction data.
 ```r
 preddat <- read_csv(here::here("data/release/student/student_predict_x_release.csv"))
 ```

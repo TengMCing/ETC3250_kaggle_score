@@ -32,7 +32,7 @@ mycv <- vfold_cv(mydat, v = 3, strata = "cause")
 # However, the parameter k is unknown and we would like it to be tuned by CV.
 # The final step is to transform all the nominal predictors to dummy variables.
 # The reason to perform this step is because xgboost doesn't accept categorical
-# variable. You might not need to use this step for fitting other models.
+# variable. You might not need to use this step for other models.
 # If you feel like the knn imputation takes a significant amount time to run, you could try other imputation
 # methods provided by recipes.
 # https://recipes.tidymodels.org/reference/index.html
