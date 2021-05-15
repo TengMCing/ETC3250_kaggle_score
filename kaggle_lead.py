@@ -7,6 +7,7 @@ from pytz import timezone
 import matplotlib.pyplot as plt
 import collections
 import seaborn as sns
+from statistics import median
 
 
 def mark(score):
@@ -41,11 +42,18 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
             tmp_mark = '<=7'
-        tmp_date = datetime.datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').replace(tzinfo = datetime.timezone.utc).astimezone(timezone("Australia/Victoria")).strftime('%d %b %H:%M:%S')
 
+        tmp_date = datetime.datetime.strptime(
+            row[2], '%Y-%m-%d %H:%M:%S'
+            ).replace(
+            tzinfo = datetime.timezone.utc
+            ).astimezone(
+            timezone("Australia/Victoria")
+            ).strftime(
+            '%d %b %H:%M:%S'
+            )
 
         row[2] = tmp_date
-
         result.append(row + [tmp_mark])
 
 
@@ -56,21 +64,51 @@ plt.bar(labels, counts, align = 'center')
 plt.gca().set_xticks(range(6,16))
 plt.xlabel('Points')
 plt.ylabel('Count')
-plt.title(r'Histogram of Points, $\quad \overline{x}=' + str(round(sum([mark(_[3]) for _ in result])/len(result), 2)) +'$')
+plt.title(r'Histogram of Points, $\quad \overline{x}=' +
+    str(round(sum([mark(_[3]) for _ in result])/len(result), 2)) +
+    '$' +
+    r', $\quad \mathrm{Median} =' +
+    str(median([mark(_[3]) for _ in result])) +
+    '$')
 plt.savefig(os.path.join(cwd, "data/points_hist.png"), dpi = 300)
 
-plt.clf()
-sns.distplot([float(_[3]) for _ in result], kde = True, color = 'darkblue', rug = True, hist = False, norm_hist = True)
-plt.xlabel('Score')
-plt.title(r'Density of Score, $\quad \overline{x}=' + str(round(sum([float(_[3]) for _ in result])/len(result), 4)) +'$')
-plt.vlines([0.61516, 0.88172], ymin = 0, ymax = 15, linestyles = "dashed", colors = "red")
-plt.annotate("Baseline", (0.61516, 15), ha = "center")
-plt.annotate("Admin", (0.88172, 15), ha = "center")
-plt.savefig(os.path.join(cwd, "data/score_density.png"), dpi = 300)
 
 plt.clf()
-plt.hlines(range(7, 16), xmin = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656, 0][::-1], xmax=[1, 0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656][::-1], colors = "blue")
-plt.vlines([0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656][::-1], ymin = 7, ymax = range(8,16), linestyles = 'dashed', colors = "blue")
+plt.vlines([0.61516, 0.88172],
+    ymin = 0,
+    ymax = 15,
+    linestyles = "dashed",
+    colors = "red")
+plt.annotate("Baseline", (0.61516, 15), ha = "center")
+plt.annotate("Admin", (0.88172, 15), ha = "center")
+sns.distplot([float(_[3]) for _ in result],
+    kde = True,
+    kde_kws = {'bw_adjust' : 0.5},
+    color = 'darkblue',
+    rug = True,
+    hist = False,
+    norm_hist = True)
+plt.xlabel('Score')
+plt.title(r'Density of Score, $\quad \overline{x}=' +
+    str(round(sum([float(_[3]) for _ in result])/len(result), 4)) +
+    '$' +
+    r', $\quad \mathrm{Median} =' +
+    str(round(median([float(_[3]) for _ in result]), 4)) +
+    '$')
+plt.savefig(os.path.join(cwd, "data/score_density.png"), dpi = 300)
+
+
+plt.clf()
+plt.hlines(range(7, 16),
+    xmin = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656, 0][::-1],
+    xmax=[1, 0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656][::-1],
+    colors = "blue")
+plt.vlines([0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656][::-1],
+    ymin = 7,
+    ymax = range(8,16),
+    linestyles = 'dashed',
+    colors = "blue")
+
 
 j = 7
 for i in [0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656][::-1]:
