@@ -5,6 +5,7 @@ import csv
 import datetime
 from pytz import timezone
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import collections
 import seaborn as sns
 from statistics import median
@@ -13,6 +14,115 @@ from statistics import median
 def mark(score):
     std = [0.88172, 0.861, 0.800, 0.769, 0.738, 0.677, 0.661, 0.656]
     return(15 - len([0 for _ in std if float(score) <= _]))
+
+def handle_his():
+    cwd = os.getcwd()
+    with open(os.path.join(cwd, "data", "log.txt"), 'r') as f:
+        file_hist = []
+        current_dist = {}
+        start = False
+        plus = False
+        for line in f:
+
+            if 'commit' in line:
+                if start == True:
+                    start = False
+                    file_hist.append(current_dist)
+                    current_dist = {}
+                    continue
+
+            if "Date:" in line:
+                line = line.replace(' '*3, ' ').replace(' '*2, ' ')
+                current_dist['date'] = line.split(' ')[2:6]
+                current_dist['date'][3] = current_dist['date'][3].zfill(2)
+                current_dist['date'] = ' '.join(current_dist['date'])
+                current_dist['date'] = datetime.datetime.strptime(
+                    current_dist['date'],
+                    '%b %d %H:%M:%S %Y')
+                current_dist['score'] = []
+                current_dist['plus'] = []
+                current_dist['team_id'] = []
+                continue
+
+            if '@@' in line:
+                start = True
+                continue
+
+            if start:
+                if '+' == line[0] or '-' == line[0]:
+                    plus = True if '+' == line[0] else False
+                    line = line[1:]
+                    team_name = line.replace('\n', '').split(',')[1]
+                    team_id = line.replace('\n', '').split(',')[0]
+
+                    if team_name == 'Admin' or team_name == 'Admin2':
+                        continue
+
+                    score = line.replace('\n', '').split(',')[-1]
+                    try:
+                        score = float(score)
+                        team_id = int(team_id)
+                        current_dist['score'].append(score)
+                        current_dist['plus'].append(plus)
+                        current_dist['team_id'].append(team_id)
+                    except:
+                        pass
+
+        file_hist.append(current_dist)
+
+        file_stat = []
+
+        current_sum_score = 0
+        current_sum_point = 0
+        all_team_id = []
+
+        for commit in file_hist:
+            current_dist = {}
+            current_dist['date'] = commit['date']
+            for x, y in zip(commit['score'], commit['plus']):
+                if y:
+                    current_sum_score += x
+                    current_sum_point += mark(x)
+                else:
+                    current_sum_score -= x
+                    current_sum_point -= mark(x)
+            all_team_id = all_team_id + commit['team_id']
+            total_number = len(collections.Counter(all_team_id).keys())
+            current_dist['mean_score'] = current_sum_score/total_number
+            current_dist['mean_point'] = current_sum_point/total_number
+            current_dist['total_number'] = total_number
+            file_stat.append(current_dist)
+
+        plt.clf()
+        fig, axs = plt.subplots(2, sharex=True)
+        fig.suptitle('Mean scores and mean points')
+        axs[0].plot([_['date'] for _ in file_stat],
+            [_['mean_score'] for _ in file_stat],
+            '-bo',
+            markersize = 3,
+            mfc= 'red',
+            mec = 'k')
+        axs[1].plot([_['date'] for _ in file_stat],
+            [_['mean_point'] for _ in file_stat],
+            '-bo',
+            markersize = 3,
+            mfc= 'red',
+            mec = 'k')
+        axs[1].xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
+        plt.savefig(os.path.join(cwd, "data/timeline.png"), dpi = 300)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 cwd = os.getcwd()
@@ -121,6 +231,8 @@ plt.xlabel("Score")
 plt.ylabel("Points")
 plt.savefig(os.path.join(cwd, "data/grading.png"), dpi = 300)
 
+handle_his()
+
 
 with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write("# ETC3250 Kaggle score\n\n")
@@ -132,6 +244,7 @@ with open(os.path.join(cwd, 'README.md'), 'w') as f:
     f.write('<img src="data/grading.png" width="100%" height="100%" />\n\n')
     f.write('<img src="data/score_density.png" width="100%" height="100%" />\n\n')
     f.write('<img src="data/points_hist.png" width="100%" height="100%" />\n\n')
+    f.write('<img src="data/timeline.png" width="100%" height="100%" />\n\n')
     f.write('|#|Team Id|Team Name|Submission Date|Score|Points|\n')
     f.write('|---|---|---|---|---|---|\n')
     j = 0
