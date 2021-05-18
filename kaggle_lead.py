@@ -58,6 +58,12 @@ def handle_his():
                     if team_name == 'Admin' or team_name == 'Admin2':
                         continue
 
+                    try:
+                        if float(line.replace('\n', '').split(',')[-1]) >= 1:
+                            continue
+                    except:
+                        pass
+
                     score = line.replace('\n', '').split(',')[-1]
                     try:
                         score = float(score)
@@ -148,6 +154,8 @@ with open(os.path.join(cwd, 'data', csv_name), 'r') as f:
         if row[1] == "Admin":
             continue
         if row[1] == "Admin2":
+            continue
+        if float(row[-1]) >= 1:
             continue
         tmp_mark = mark(row[-1])
         if tmp_mark <= 7:
