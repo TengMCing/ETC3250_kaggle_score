@@ -132,13 +132,13 @@ def handle_his():
 
 
 cwd = os.getcwd()
-target_path = os.path.join(cwd, "data/publicleaderboarddata.zip")
+target_path = os.path.join(cwd, "data/spotoroo-publicleaderboard.zip")
 
-r = requests.get("https://www.kaggle.com/c/27753/publicleaderboarddata.zip", stream = True)
+# r = requests.get("https://www.kaggle.com/c/27753/publicleaderboarddata.zip", stream = True)
 
-with open(target_path, "wb") as f:
-    for chunk in r.iter_content(chunk_size = 128):
-        f.write(chunk)
+# with open(target_path, "wb") as f:
+#     for chunk in r.iter_content(chunk_size = 128):
+#         f.write(chunk)
 
 
 with zipfile.ZipFile(target_path, 'r') as zip_ref:
