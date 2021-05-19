@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+    <title>down</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        $("body").append($("<a id='download_kaggle'/>"));
+        $('#download_kaggle').attr("href", "https://www.kaggle.com/c/27753/publicleaderboarddata.zip");
+        $('#download_kaggle').attr("download", "spotoroo-publicleaderboard.zip");
+        $('#download_kaggle')[0].click();
+    </script>
+
+</body>
+</html>
